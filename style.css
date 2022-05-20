@@ -1,0 +1,64 @@
+:root {
+    --main-font: 'Quicksand', sans-serif;
+}
+
+* {
+    font-family: var(--main-font);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.container__left {
+    background-color: blue;
+    height: 100vh;
+    padding: 2rem 4rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: space-between;
+}
+
+.app-title {
+    margin-left: 1rem;
+}
+
+.app-title h1 {
+    font-size: 1.75rem;
+}
+
+.recent-document {
+    margin-left: 1.75rem;
+}
+
+.recent-document__container {
+    margin-top: 0.85rem;
+}
+
+.recent-document__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.35rem;
+}
+
+.recent-document__item__title {
+    margin-left: 0.55rem;
+}
+
+.app-setting {
+    margin-bottom: 5rem;
+    margin-left: 1.75rem;
+}
+
+.app-setting__item {
+    display: flex;
+    align-items: center;
+}
+
+.app-setting__item__title {
+    margin-left: 0.6rem;
+}
