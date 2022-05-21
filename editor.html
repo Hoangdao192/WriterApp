@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/decoupled-document/ckeditor.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a914f93d25.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="editor.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="container__left">
+            <div class="close-sidebar">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="app-title">
+                <h1>Writer App</h1>
+            </div>
+            <div class="recent-document">
+                <div class="recent-document__title">
+                    <h4>Recent</h4>
+                </div>
+                <div class="recent-document__container">
+                    <div class="recent-document__item">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <p class="recent-document__item__title">
+                            document_1
+                        </p>
+                    </div>
+                    <div class="recent-document__item">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <p class="recent-document__item__title">
+                            document_2
+                        </p>
+                    </div>
+                    <div class="recent-document__item">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <p class="recent-document__item__title">
+                            document_3
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="app-setting">
+                <div class="app-setting__item">
+                    <i class="fa-solid fa-gear"></i>
+                    <p class="app-setting__item__title">
+                        Setting
+                    </p>
+                </div>
+                <div class="app-setting__item">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p class="app-setting__item__title">
+                        About
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container__right">
+            <div class="top-bar">
+                <div class="open-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div class="app-title">
+                    <h1>Writer App</h1>
+                </div>
+            </div>
+            <div class="nav-button">
+                <div class="nav-button--item nav-button__save">
+                    <p>Save</p>
+                </div>
+                <div class="nav-button--item nav-button__home">
+                    <p>Back To Home</p>
+                </div>
+            </div>
+            <div class="editor">
+                <div id="toolbar-container"></div>  
+                <div id="editor">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let openSidebarButton = document.querySelector(".open-sidebar");
+    let sidebar = document.querySelector(".container__left");
+    openSidebarButton.addEventListener('click', function() {   
+        sidebar.style.animation = "leftFlyIn 0.3s ease"; 
+        sidebar.style.display = "flex";
+    })
+
+    let closeSideBarButton = document.querySelector(".close-sidebar");
+    closeSideBarButton.addEventListener('click', function(){
+        sidebar.style.animation = "leftFlyOut 0.3s ease forwards";
+    })
+
+    let homeButton = document.querySelector(".nav-button__home");
+    homeButton.addEventListener('click', function(){
+        window.location.href = "index.html";
+    })
+
+    DecoupledEditor
+        .create( document.querySelector( '#editor' ) )
+        .then( editor => {
+            const toolbarContainer = document.querySelector( '#toolbar-container' );
+
+            toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+</html>

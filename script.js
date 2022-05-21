@@ -9,3 +9,8 @@ let closeSideBarButton = document.querySelector(".close-sidebar");
 closeSideBarButton.addEventListener('click', function(){
     sidebar.style.animation = "leftFlyOut 0.3s ease forwards";
 })
+
+let newDocumentButton = document.querySelector(".new-document");
+newDocumentButton.addEventListener('click', function() {
+    window.location.href = "editor.html";
+})

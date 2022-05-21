@@ -20,6 +20,9 @@
 }
 
 .container__left {
+    width: 30%;
+    max-width: 15rem;
+    min-width: 15rem;
     height: 100vh;
     padding: 2rem 4rem 2rem 2rem;
     display: flex;
@@ -47,6 +50,7 @@
 
 .recent-document {
     margin-left: 1.75rem;
+    font-size: 1.25rem;
 }
 
 .recent-document__container {
@@ -70,8 +74,9 @@
 
 .app-setting__item {
     display: flex;
+    font-size: 1.25rem;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .app-setting__item__title {
@@ -79,8 +84,9 @@
 }
 
 .container__right {
+    position: relative;
     padding: 2rem;
-    width: 80%;
+    width: 50%;
 }
 
 .search-bar {
@@ -88,7 +94,7 @@
     padding: 0.65rem 0.65rem 0.65rem 1rem;
     border-radius: 25px;
     border: 2px solid var(--lighter-primary-color);
-    width: 70%;
+    width: 100%;
 }
 
 .open-sidebar {
@@ -132,6 +138,34 @@
     color: white;
 }
 
+.new-document {
+    align-items: center;
+    margin-top: 1.55rem;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: var(--secondary-color);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.new-document p {
+    display: inline-block;
+    color: white;
+}
+
+.new-document i {
+    color: white;
+    margin-left: 0.5rem;
+    transition: 0.3s;
+}
+
+.new-document:hover i {
+    transform: rotate(90deg);
+}
+
 .document-container {
     margin-top: 2rem;
     width: 100%;
@@ -140,7 +174,7 @@
 .document-item {
     position: relative;
     padding: 1rem;
-    width: 70%;
+    width: 100%;
     border: 2px solid var(--lighter-primary-color);
     border-radius: 15px;
     margin-bottom: 1rem;
@@ -211,6 +245,13 @@
     color: var(--secondary-color);
 }
 
+@media screen and (max-width: 1200px) {
+    .container__right {
+        width: 100%;
+    }
+    
+}
+
 @media screen and (max-width: 700px) {
     .container__left {
         display: none;
@@ -273,6 +314,30 @@
 
     .container__right {
         width: 100%;
+        height: 100vh;
+    }
+
+    .new-document {
+        position: absolute;
+        bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.5rem;
+        border-radius: 100%;
+        height: 3.5rem;
+        font-size: 1.25rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .new-document p {
+        display: none;
+        padding: 0;
+    }
+
+    .new-document i {
+        margin: 0;
     }
 
     .document-item {
