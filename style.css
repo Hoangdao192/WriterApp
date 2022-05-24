@@ -14,6 +14,10 @@
     padding: 0;
 }
 
+body {
+    overflow: hidden;
+}
+
 .pop-up-container {
     position: fixed;
     width: 100vw;
@@ -139,6 +143,11 @@
     display: flex;
     align-items: center;
     margin-bottom: 0.35rem;
+    cursor: pointer;
+}
+
+.recent-document__item:hover .recent-document__item__title {
+    text-decoration: underline;
 }
 
 .recent-document__item__title {

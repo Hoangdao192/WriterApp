@@ -46,7 +46,8 @@ function saveDocument(documentId, documentName, documentContent) {
         weekday: "long", year: "numeric", month: "short",  
         day: "numeric", hour: "2-digit", minute: "2-digit"  
     };  
-    let lastModified = date.toLocaleTimeString("en-us", options) 
+    // let lastModified = date.toLocaleTimeString("en-us", options) 
+    let lastModified = Date.now()
     let modifiedDocumentItem = {
         documentId: documentId,
         documentName: documentName,
@@ -73,7 +74,8 @@ function createNewDocument(documentName, documentContent) {
         weekday: "long", year: "numeric", month: "short",  
         day: "numeric", hour: "2-digit", minute: "2-digit"  
     };  
-    let lastModified = date.toLocaleTimeString("en-us", options) 
+    // let lastModified = date.toLocaleTimeString("en-us", options) 
+    let lastModified = Date.now()
     let documentItem = {
         documentId: documentId,
         documentName: documentName,
@@ -169,4 +171,18 @@ function deleteFromFavorite(documentId) {
         }
     }
     sessionStorage.setItem('favorite', JSON.stringify(allFavoriteDocumentId))
+}
+
+function getAllDocumentOrderByLastModified() {
+    let documentArray = getAllDocument();
+    for (let i = 0; i < documentArray.length - 1; ++i) {
+        for (let j = i + 1; j < documentArray.length; ++j) {
+            if (parseInt(documentArray[i].lastModified) < parseInt(documentArray[j].lastModified)) {
+                let temp = documentArray[i];
+                documentArray[i] = documentArray[j]
+                documentArray[j] = temp
+            }
+        }
+    }
+    return documentArray
 }

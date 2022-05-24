@@ -113,6 +113,7 @@
 <script src="documentManager.js"></script>
 <script>
     loadAllDocument();
+    loadRecentDocumentTitle()
 
     let allDocumentButton = document.querySelector(".page-select__all");
     let favoriteDocumentButton = document.querySelector(".page-select__favorite");
@@ -143,6 +144,27 @@
         popupContainer.style.display = "none"
     })
 
+    function loadRecentDocumentTitle() {
+        let documentArray = getAllDocumentOrderByLastModified()
+        let recentDocumentContainer = document.querySelector(".recent-document__container")
+        recentDocumentContainer.innerHTML = ""
+        for (let i = 0; i < documentArray.length; ++i) {
+            if (i > 2) break
+            let recentDocumentItem = document.createElement('div')
+            recentDocumentItem.classList.add("recent-document__item")
+            recentDocumentItem.innerHTML =
+                `<i class="fa-solid fa-file-lines"></i>
+                <p class="recent-document__item__title">
+                    ${documentArray[i].documentName}
+                </p>`
+
+            recentDocumentItem.addEventListener('click', function(){
+                openDocument(documentArray[i].documentId)
+            })
+            recentDocumentContainer.appendChild(recentDocumentItem)
+        }
+    }
+
     function loadAllFavoriteDocument() {
         let documentArray = getAllFavoriteDocument();
         let documentContainer = document.querySelector(".document-container");
@@ -151,12 +173,21 @@
             let documentInformation = documentArray[i];
             let documentItem = document.createElement("div");
             documentItem.classList.add("document-item");
+
+            let date = new Date();
+            date.setTime(documentInformation.lastModified)
+            let options = {  
+                weekday: "long", year: "numeric", month: "short",  
+                day: "numeric", hour: "2-digit", minute: "2-digit"  
+            };  
+            let lastModified = date.toLocaleTimeString("en-us", options) 
+
             documentItem.innerHTML = 
                 `<div class="document-item__title">
                     <p>${documentInformation.documentName}</p>
                 </div>
                 <div class="document-item__modify-date">
-                    <p>${documentInformation.lastModified}</p>
+                    <p>${lastModified}</p>
                 </div>
                 <div class="document-item__tool">
                     <div class="document-item__tool--item document-item__tool__view">
@@ -187,7 +218,7 @@
 
             let openDocumentButton = documentItem.querySelector(".document-item__tool__open");
             openDocumentButton.addEventListener('click', function(){
-                window.location.href = `editor.html?document=${documentInformation.documentId}`
+                openDocument(documentInformation.documentId)
             })
 
             let downloadDocumentButton = documentItem.querySelector(".document-item__tool__download");
@@ -204,13 +235,22 @@
         for (let i = 0; i < documentArray.length; ++i) {
             let documentInformation = documentArray[i];
             let documentItem = document.createElement("div");
+
+            let date = new Date();
+            date.setTime(documentInformation.lastModified)
+            let options = {  
+                weekday: "long", year: "numeric", month: "short",  
+                day: "numeric", hour: "2-digit", minute: "2-digit"  
+            };  
+            let lastModified = date.toLocaleTimeString("en-us", options) 
+
             documentItem.classList.add("document-item");
             documentItem.innerHTML = 
                 `<div class="document-item__title">
                     <p>${documentInformation.documentName}</p>
                 </div>
                 <div class="document-item__modify-date">
-                    <p>${documentInformation.lastModified}</p>
+                    <p>${lastModified}</p>
                 </div>
                 <div class="document-item__tool">
                     <div class="document-item__tool--item document-item__tool__view">
@@ -243,7 +283,7 @@
 
             let openDocumentButton = documentItem.querySelector(".document-item__tool__open");
             openDocumentButton.addEventListener('click', function(){
-                window.location.href = `editor.html?document=${documentInformation.documentId}`
+                openDocument(documentInformation.documentId)
             })
 
             let downloadDocumentButton = documentItem.querySelector(".document-item__tool__download");
@@ -260,6 +300,10 @@
                 
             })
         }
+    }
+
+    function openDocument(documentId) {
+        window.location.href = `editor.html?document=${documentId}`
     }
 
     function viewDocument(documentItem) {
