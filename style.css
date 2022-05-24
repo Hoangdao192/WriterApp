@@ -256,6 +256,14 @@
     border: 2px solid var(--lighter-primary-color);
     border-radius: 15px;
     margin-bottom: 1rem;
+    animation: documentFlyIn 0.5s ease;
+}
+
+@keyframes documentFlyIn {
+    from {
+        opacity: 0;
+        transform: translateX(10%);
+    }
 }
 
 .document-item:hover {

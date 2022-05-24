@@ -121,3 +121,52 @@ function downloadDocument(documentId) {
     link.download = documentItem.documentName + ".html";
     link.click();
 }
+
+function addToFavorite(documentId) {
+    let favoriteDocumentArrayJSON = sessionStorage.getItem('favorite');
+    let favoriteDocumentArray = [];
+    if (favoriteDocumentArrayJSON != null) {
+        favoriteDocumentArray = JSON.parse(favoriteDocumentArrayJSON)
+    }
+
+    for (let i = 0; i < favoriteDocumentArray.length; ++i) {
+        if (parseInt(favoriteDocumentArray[i]) == parseInt(documentId)) return
+    }
+
+    favoriteDocumentArray.push(documentId)
+    sessionStorage.setItem('favorite', JSON.stringify(favoriteDocumentArray))
+}
+
+function getAllFavoriteDocumentId() {
+    let favoriteDocumentArrayJSON = sessionStorage.getItem('favorite');
+    let favoriteDocumentArray = [];
+    if (favoriteDocumentArrayJSON != null) {
+        favoriteDocumentArray = JSON.parse(favoriteDocumentArrayJSON)
+    }
+    return favoriteDocumentArray;
+}
+
+function getAllFavoriteDocument() {
+    let documentArray = getAllDocument();
+    let allFavoriteDocumentId = getAllFavoriteDocumentId();
+
+    let favoriteDocumentArray = [];
+    
+    console.log("a")
+    for (let i = 0; i < allFavoriteDocumentId.length; ++i) {
+        console.log("a")
+        favoriteDocumentArray.push(getDocumentById(allFavoriteDocumentId[i]))
+    }
+    return favoriteDocumentArray
+}
+
+function deleteFromFavorite(documentId) {
+    let allFavoriteDocumentId = getAllFavoriteDocumentId()
+    for (let i = 0; i < allFavoriteDocumentId.length; ++i) {
+        if (documentId == allFavoriteDocumentId[i]) {
+            allFavoriteDocumentId[i] = allFavoriteDocumentId[0];
+            allFavoriteDocumentId.shift()
+        }
+    }
+    sessionStorage.setItem('favorite', JSON.stringify(allFavoriteDocumentId))
+}

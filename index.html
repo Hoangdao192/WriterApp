@@ -10,10 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a914f93d25.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="toast.css">
     <title>Writer App</title>
 </head>
 
 <body>
+    <div class="toast"></div>
     <div class="pop-up-container">
         <div class="pop-up-background">
         </div>
@@ -90,10 +92,10 @@
                 </div>
             </div>
             <div class="page-select">
-                <div class="page-select__item page-select__item--active">
+                <div class="page-select__item page-select__item--active page-select__all">
                     <p>All</p>
                 </div>
-                <div class="page-select__item">
+                <div class="page-select__item page-select__favorite">
                     <p>Favorite</p>
                 </div>
             </div>
@@ -107,15 +109,93 @@
     </div>
 </body>
 <script src="script.js"></script>
+<script src="toast.js"></script>
 <script src="documentManager.js"></script>
 <script>
     loadAllDocument();
+
+    let allDocumentButton = document.querySelector(".page-select__all");
+    let favoriteDocumentButton = document.querySelector(".page-select__favorite");
+
+    allDocumentButton.addEventListener('click', function() {
+        if (!allDocumentButton.classList.contains("page-select__item--active")) {
+            allDocumentButton.classList.add("page-select__item--active")
+        }
+        if (favoriteDocumentButton.classList.contains("page-select__item--active")) {
+            favoriteDocumentButton.classList.remove("page-select__item--active")
+        }
+        loadAllDocument()
+    })
+
+    favoriteDocumentButton.addEventListener('click', function(){
+        if (!favoriteDocumentButton.classList.contains("page-select__item--active")) {
+            favoriteDocumentButton.classList.add("page-select__item--active")
+        }
+        if (allDocumentButton.classList.contains("page-select__item--active")) {
+            allDocumentButton.classList.remove("page-select__item--active")
+        }
+        loadAllFavoriteDocument()
+    })
 
     let popupContainer = document.querySelector(".pop-up-container")
     let closePopup = document.querySelector(".pop-up-item__close");
     closePopup.addEventListener('click', function(){
         popupContainer.style.display = "none"
     })
+
+    function loadAllFavoriteDocument() {
+        let documentArray = getAllFavoriteDocument();
+        let documentContainer = document.querySelector(".document-container");
+        documentContainer.innerHTML = "";
+        for (let i = 0; i < documentArray.length; ++i) {
+            let documentInformation = documentArray[i];
+            let documentItem = document.createElement("div");
+            documentItem.classList.add("document-item");
+            documentItem.innerHTML = 
+                `<div class="document-item__title">
+                    <p>${documentInformation.documentName}</p>
+                </div>
+                <div class="document-item__modify-date">
+                    <p>${documentInformation.lastModified}</p>
+                </div>
+                <div class="document-item__tool">
+                    <div class="document-item__tool--item document-item__tool__view">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__open">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__unfavorite">
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__download">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                    </div>
+                </div>`
+            let removeFavoriteButton = documentItem.querySelector(".document-item__tool__unfavorite")
+            removeFavoriteButton.addEventListener('click', function(){
+                deleteFromFavorite(documentInformation.documentId)
+                createToastMessage("Removed from favorite list")
+                loadAllFavoriteDocument()
+            })
+
+            let viewDocumentButton = documentItem.querySelector(".document-item__tool__view");
+            viewDocumentButton.addEventListener('click', function(){
+                viewDocument(documentInformation)
+            })
+            documentContainer.appendChild(documentItem);
+
+            let openDocumentButton = documentItem.querySelector(".document-item__tool__open");
+            openDocumentButton.addEventListener('click', function(){
+                window.location.href = `editor.html?document=${documentInformation.documentId}`
+            })
+
+            let downloadDocumentButton = documentItem.querySelector(".document-item__tool__download");
+            downloadDocumentButton.addEventListener('click', function(){
+                downloadDocument(documentInformation.documentId)
+            })
+        }
+    }
 
     function loadAllDocument() {
         let documentArray = getAllDocument();
@@ -149,6 +229,12 @@
                         <i class="fa-solid fa-trash"></i>
                     </div>
                 </div>`
+            let addToFavoriteButton = documentItem.querySelector(".document-item__tool__favorite")
+            addToFavoriteButton.addEventListener('click', function(){
+                addToFavorite(documentInformation.documentId)
+                createToastMessage("Added to favorite")
+            })
+
             let viewDocumentButton = documentItem.querySelector(".document-item__tool__view");
             viewDocumentButton.addEventListener('click', function(){
                 viewDocument(documentInformation)
