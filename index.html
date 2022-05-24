@@ -14,6 +14,21 @@
 </head>
 
 <body>
+    <div class="pop-up-container">
+        <div class="pop-up-background">
+        </div>
+        <div class="pop-up-item">
+            <div class="pop-up-item__document-title">
+                <p>Hello</p>
+            </div>
+            <div class="pop-up-item__content">
+                Hello I âmjsjajsjkasjk
+            </div>
+            <div class="pop-up-item__close">
+                <p>Close</p>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="container__left">
             <div class="close-sidebar">
@@ -87,54 +102,90 @@
                 <i class="fa-solid fa-plus"></i>
             </div>
             <div class="document-container">
-                <div class="document-item">
-                    <div class="document-item__title">
-                        <p>How many people are there in your family ?</p>
-                    </div>
-                    <div class="document-item__modify-date">
-                        <p>May 20, 2022 at 9:20 PM</p>
-                    </div>
-                    <div class="document-item__tool">
-                        <div class="document-item__tool--item document-item__tool__open">
-                            <i class="fa-solid fa-folder-open"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__favorite">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__download">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__delete">
-                            <i class="fa-solid fa-trash"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="document-item">
-                    <div class="document-item__title">
-                        <p>How do people think about Vietnam ?</p>
-                    </div>
-                    <div class="document-item__modify-date">
-                        <p>May 20, 2022 at 9:20 PM</p>
-                    </div>
-                    <div class="document-item__tool">
-                        <div class="document-item__tool--item document-item__tool__open">
-                            <i class="fa-solid fa-folder-open"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__favorite">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__download">
-                            <i class="fa-solid fa-file-arrow-down"></i>
-                        </div>
-                        <div class="document-item__tool--item document-item__tool__delete">
-                            <i class="fa-solid fa-trash"></i>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </body>
 <script src="script.js"></script>
+<script src="documentManager.js"></script>
+<script>
+    loadAllDocument();
+
+    let popupContainer = document.querySelector(".pop-up-container")
+    let closePopup = document.querySelector(".pop-up-item__close");
+    closePopup.addEventListener('click', function(){
+        popupContainer.style.display = "none"
+    })
+
+    function loadAllDocument() {
+        let documentArray = getAllDocument();
+        let documentContainer = document.querySelector(".document-container");
+        documentContainer.innerHTML = "";
+        for (let i = 0; i < documentArray.length; ++i) {
+            let documentInformation = documentArray[i];
+            let documentItem = document.createElement("div");
+            documentItem.classList.add("document-item");
+            documentItem.innerHTML = 
+                `<div class="document-item__title">
+                    <p>${documentInformation.documentName}</p>
+                </div>
+                <div class="document-item__modify-date">
+                    <p>${documentInformation.lastModified}</p>
+                </div>
+                <div class="document-item__tool">
+                    <div class="document-item__tool--item document-item__tool__view">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__open">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__favorite">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__download">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                    </div>
+                    <div class="document-item__tool--item document-item__tool__delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
+                </div>`
+            let viewDocumentButton = documentItem.querySelector(".document-item__tool__view");
+            viewDocumentButton.addEventListener('click', function(){
+                viewDocument(documentInformation)
+            })
+            documentContainer.appendChild(documentItem);
+
+            let openDocumentButton = documentItem.querySelector(".document-item__tool__open");
+            openDocumentButton.addEventListener('click', function(){
+                window.location.href = `editor.html?document=${documentInformation.documentId}`
+            })
+
+            let downloadDocumentButton = documentItem.querySelector(".document-item__tool__download");
+            downloadDocumentButton.addEventListener('click', function(){
+                downloadDocument(documentInformation.documentId)
+            })
+
+            let deleteDocumentButton = documentItem.querySelector(".document-item__tool__delete");
+            deleteDocumentButton.addEventListener('click', function(){
+                deleteDocument(documentInformation.documentId)
+                setTimeout(function(){
+                    loadAllDocument()
+                }, 100)
+                
+            })
+        }
+    }
+
+    function viewDocument(documentItem) {
+        let popupContainer = document.querySelector(".pop-up-container")
+        popupContainer.style.display = "flex";
+
+        let documentTitle = document.querySelector(".pop-up-item__document-title")
+        let documentContent = document.querySelector(".pop-up-item__content")
+        
+        documentTitle.innerHTML = `<p>${documentItem.documentName}</p>`;
+        documentContent.innerHTML = documentItem.documentContent;
+    }
+</script>
 
 </html>

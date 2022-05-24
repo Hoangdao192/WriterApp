@@ -21,6 +21,17 @@
     flex-direction: column;
 }
 
+.document-title-input {
+    padding: 1rem;
+    padding-left: 0;
+}
+
+.document-title-input input {
+    border: none;
+    outline: none;
+    font-size: 1.25rem;
+}
+
 #toolbar-container {
     width: 100%;
 }

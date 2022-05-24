@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/decoupled-document/ckeditor.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
     <script src="https://kit.fontawesome.com/a914f93d25.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="editor.css">
+    <link rel="stylesheet" href="toast.css">
     <title>Document</title>
 </head>
 <body>
+    <div class="toast">
+    </div>
     <div class="container">
         <div class="container__left">
             <div class="close-sidebar">
@@ -78,6 +82,10 @@
                 </div>
             </div>
             <div class="editor">
+                <input type="hidden" class="document-id">
+                <div class="document-title-input">
+                    <input type="text" placeholder="Enter document name">
+                </div>
                 <div id="toolbar-container"></div>  
                 <div id="editor">
                     <p></p>
@@ -86,7 +94,14 @@
         </div>
     </div>
 </body>
+<script src="toast.js"></script>
+<script src="documentManager.js"></script>
 <script>
+    if (getUrlParameter() != null) {
+        console.log(getDocumentById(getUrlParameter()))
+        loadDocument(getUrlParameter());
+    }
+
     let openSidebarButton = document.querySelector(".open-sidebar");
     let sidebar = document.querySelector(".container__left");
     openSidebarButton.addEventListener('click', function() {   
@@ -104,8 +119,26 @@
         window.location.href = "index.html";
     })
 
+    let saveButton = document.querySelector(".nav-button__save");
+    saveButton.addEventListener('click', function(){
+        let documentTitleInput = document.querySelector(".document-title-input input");
+        let editor = document.getElementById("editor");
+
+        if (documentTitleInput.value == "") {
+            createToastMessage('Document name cannot be empty.')
+        } else {
+            let documentId = document.querySelector(".document-id").value;
+            if (documentId == null || documentId == "") {
+                createNewDocument(documentTitleInput.value, editor.innerHTML)
+            } else {
+                saveDocument(documentId, documentTitleInput.value, editor.innerHTML)
+            }
+            createToastMessage("Saved");
+        }
+    })
+
     DecoupledEditor
-        .create( document.querySelector( '#editor' ) )
+        .create( document.querySelector( '#editor' ))
         .then( editor => {
             const toolbarContainer = document.querySelector( '#toolbar-container' );
 
@@ -114,5 +147,12 @@
         .catch( error => {
             console.error( error );
         } );
+
+    function getUrlParameter() {
+        let urlString = window.location.href;
+        let url = new URL(urlString);
+        let documentId = url.searchParams.get("document");
+        return documentId
+    }
 </script>
 </html>

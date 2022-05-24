@@ -14,3 +14,4 @@ let newDocumentButton = document.querySelector(".new-document");
 newDocumentButton.addEventListener('click', function() {
     window.location.href = "editor.html";
 })
+
