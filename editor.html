@@ -102,6 +102,33 @@
         loadDocument(getUrlParameter());
     }
 
+    loadRecentDocumentTitle()
+
+    function openDocument(documentId) {
+        window.location.href = `editor.html?document=${documentId}`
+    }
+
+    function loadRecentDocumentTitle() {
+        let documentArray = getAllDocumentOrderByLastModified()
+        let recentDocumentContainer = document.querySelector(".recent-document__container")
+        recentDocumentContainer.innerHTML = ""
+        for (let i = 0; i < documentArray.length; ++i) {
+            if (i > 2) break
+            let recentDocumentItem = document.createElement('div')
+            recentDocumentItem.classList.add("recent-document__item")
+            recentDocumentItem.innerHTML =
+                `<i class="fa-solid fa-file-lines"></i>
+                <p class="recent-document__item__title">
+                    ${documentArray[i].documentName}
+                </p>`
+
+            recentDocumentItem.addEventListener('click', function(){
+                openDocument(documentArray[i].documentId)
+            })
+            recentDocumentContainer.appendChild(recentDocumentItem)
+        }
+    }
+
     let openSidebarButton = document.querySelector(".open-sidebar");
     let sidebar = document.querySelector(".container__left");
     openSidebarButton.addEventListener('click', function() {   

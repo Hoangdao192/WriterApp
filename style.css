@@ -152,6 +152,7 @@ body {
 
 .recent-document__item__title {
     margin-left: 0.55rem;
+    white-space: nowrap;
 }
 
 .app-setting {
